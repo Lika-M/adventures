@@ -1,0 +1,10 @@
+a.active,
+button.active {
+    color: white !important;
+}
+
+a.active::after,
+button.active::after,
+a.active h3:after {
+    width: 100% !important;
+}

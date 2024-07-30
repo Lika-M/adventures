@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
+import MainNavigation from '@/components/navigation/main-navigation';
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,7 +24,10 @@ export default function RootLayout({
         <link rel="icon" href="/world-map.png" />
         <title>Adventures</title>
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <MainNavigation />
+        {children}
+      </body>
     </html>
   );
 }
