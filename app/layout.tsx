@@ -20,7 +20,7 @@ export default function RootLayout({
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/world-map.png" />
-        <title>Next App</title>
+        <title>Adventures</title>
       </head>
       <body className={inter.className}>{children}</body>
     </html>
