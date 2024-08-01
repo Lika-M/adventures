@@ -30,37 +30,6 @@
     margin-bottom: 1.5rem;
 }
 
-.actions {
-    margin-top: 1rem;
-    text-align: right;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.actions button {
-    font: inherit;
-    cursor: pointer;
-    background-color: #77002e;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border: 1px solid #77002e;
-    border-radius: 4px;
-    font-weight: bold;
-}
-
-.actions button:hover{
-    background-color: #a50e48;
-    border-color: #a50e48;
-}
-
-.actions button[disabled],
-.actions button[disabled]:hover {
-    background-color: #764558;
-    color: #ae99a1;
-    border: 1px solid #764558;
-}
 
 .error {
     width: 100%;
@@ -100,11 +69,12 @@
     }
 }
 
-@media screen and (max-width: 550px){
+@media screen and (max-width: 550px) {
 
     .control textarea {
         margin-bottom: 0;
     }
+
     .actions {
         flex-direction: column;
         justify-content: center;

@@ -11,6 +11,8 @@ export type FormState = {
     }
 }
 
+const delay = async (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export async function createAdventure(prevState: FormState, formData: FormData) {
     const title = formData.get('title') as string;
     const image = formData.get('image') as File;
@@ -25,7 +27,6 @@ export async function createAdventure(prevState: FormState, formData: FormData) 
     };
 
     let hasErrors = false;
-    console.log(image)
 
     if (!title || title === '') {
         errors.title = 'Title is required!';
@@ -56,6 +57,8 @@ export async function createAdventure(prevState: FormState, formData: FormData) 
     } else {
         // Store image in Cloudinary
         // Store data in the DB
+
+        await delay(5000);
 
         return {
             success: true,

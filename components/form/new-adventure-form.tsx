@@ -1,10 +1,10 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useFormState} from 'react-dom';
 
 import { createAdventure } from '@/app/actions';
+import SubmitButton from './submit-btn';
 import classes from './new-adventure-form.module.css';
-
 
 export default function NewAdventureForm() {
     let initialState = {
@@ -18,7 +18,6 @@ export default function NewAdventureForm() {
         }
     }
     const [state, formAction] = useFormState(createAdventure, initialState);
-    console.log(state)
 
     return (
         <div className={classes.wrapper}>
@@ -60,9 +59,7 @@ export default function NewAdventureForm() {
                     ></textarea>
                     {state.errors.description && <p className={classes.error}>{state.errors.description}</p>}
                 </div>
-                <div className={classes.actions}>
-                    <button disabled={false}>Add Adventure</button>
-                </div>
+                <SubmitButton />
             </form>
         </div>
     );

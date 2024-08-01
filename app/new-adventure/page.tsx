@@ -1,5 +1,5 @@
 
-import NewAdventureForm from '@/components/adventures/new-adventure-form';
+import NewAdventureForm from '@/components/form/new-adventure-form';
 
 export default function NewAdventure() {
     return (
