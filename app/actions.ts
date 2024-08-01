@@ -1,59 +1,71 @@
 'use server'
 
-type FormState = {
+export type FormState = {
     success: boolean,
     message: string,
-    errors: string[]
+    errors: {
+        title: string;
+        image: string;
+        address: string;
+        description: string;
+    }
 }
 
 export async function createAdventure(prevState: FormState, formData: FormData) {
-
-    console.log(formData.get('image'));
-
-    //TODO validation
-
-    const title = formData.get('title');
+    const title = formData.get('title') as string;
     const image = formData.get('image') as File;
-    const address = formData.get('address');
-    const description = formData.get('description');
+    const address = formData.get('address') as string;
+    const description = formData.get('description') as string;
 
-    let errors: string[] = [];
+    let errors: FormState['errors'] = {
+        title: '',
+        image: '',
+        address: '',
+        description: ''
+    };
+
+    let hasErrors = false;
+    console.log(image)
 
     if (!title || title === '') {
-        errors.push('Title is required!');
+        errors.title = 'Title is required!';
+        hasErrors = true;
     }
 
-    if (!image || image.size === 0) {
-        errors.push('Image is required!');
+    if (image.size === 0 || image.name === undefined) {
+        errors.image = 'Image is required!';
+        hasErrors = true;
     }
 
     if (!address || address === '') {
-        errors.push('Address is required!');
+        errors.address = 'Address is required!';
+        hasErrors = true;
     }
 
     if (!description || description === '') {
-        errors.push('Description is required!');
+        errors.description = 'Description is required!';
+        hasErrors = true;
     }
 
-    if (errors.length > 0) {
+    if (hasErrors) {
         return {
-            success: true,
+            success: false,
             message: 'Invalid data.',
-            errors: []
+            errors: errors
         };
     } else {
         // Store image in Cloudinary
         // Store data in the DB
-        
+
         return {
-            success: false,
+            success: true,
             message: 'Stored in the DB.',
-            errors: errors
+            errors: {
+                title: '',
+                image: '',
+                address: '',
+                description: ''
+            }
         };
-
-
-
-
-
     }
 }

@@ -5,12 +5,20 @@ import { useFormState } from 'react-dom';
 import { createAdventure } from '@/app/actions';
 import classes from './new-adventure-form.module.css';
 
+
 export default function NewAdventureForm() {
-    const [state, formAction] = useFormState(createAdventure, {
+    let initialState = {
         success: false,
         message: '',
-        errors: []
-    });
+        errors: {
+            title: '',
+            image: '',
+            address: '',
+            description: ''
+        }
+    }
+    const [state, formAction] = useFormState(createAdventure, initialState);
+    console.log(state)
 
     return (
         <div className={classes.wrapper}>
@@ -22,6 +30,7 @@ export default function NewAdventureForm() {
                         id='title'
                         name='title'
                     />
+                    {state.errors.title && <p className={classes.error}>{state.errors.title}</p>}
                 </div>
                 <div className={classes.control}>
                     <label htmlFor="image">Image</label>
@@ -31,6 +40,7 @@ export default function NewAdventureForm() {
                         id="image"
                         name="image"
                     />
+                    {state.errors.image && <p className={classes.error}>{state.errors.image}</p>}
                 </div>
                 <div className={classes.control}>
                     <label htmlFor='address'>Address</label>
@@ -39,6 +49,7 @@ export default function NewAdventureForm() {
                         id='address'
                         name='address'
                     />
+                    {state.errors.address && <p className={classes.error}>{state.errors.address}</p>}
                 </div>
                 <div className={classes.control}>
                     <label htmlFor='description'>Description</label>
@@ -47,6 +58,7 @@ export default function NewAdventureForm() {
                         name='description'
                         rows={5}
                     ></textarea>
+                    {state.errors.description && <p className={classes.error}>{state.errors.description}</p>}
                 </div>
                 <div className={classes.actions}>
                     <button disabled={false}>Add Adventure</button>
