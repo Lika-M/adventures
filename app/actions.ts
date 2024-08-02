@@ -1,4 +1,6 @@
-'use server'
+'use server';
+
+import { uploadImage } from "@/lib/cloudinary";
 
 export type FormState = {
     success: boolean,
@@ -11,7 +13,7 @@ export type FormState = {
     }
 }
 
-const delay = async (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = async (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function createAdventure(prevState: FormState, formData: FormData) {
     const title = formData.get('title') as string;
@@ -55,20 +57,38 @@ export async function createAdventure(prevState: FormState, formData: FormData) 
             errors: errors
         };
     } else {
-        // Store image in Cloudinary
-        // Store data in the DB
+        try {
+            if (image) {
+                const arrayBuffer = await image.arrayBuffer();
+                const base64String = Buffer.from(arrayBuffer).toString('base64');
+                const fileUri = `data:${image.type};base64,${base64String}`;
 
-        await delay(5000);
-
-        return {
-            success: true,
-            message: 'Stored in the DB.',
-            errors: {
-                title: '',
-                image: '',
-                address: '',
-                description: ''
+                await uploadImage(fileUri);
+                console.log('success!');
             }
-        };
+
+            // Store data in the DB
+
+            await delay(5000);
+
+            return {
+                success: true,
+                message: 'Stored in the DB.',
+                errors: {
+                    title: '',
+                    image: '',
+                    address: '',
+                    description: ''
+                }
+            };
+        } catch (error: any) {
+            errors.image = 'Image uploading fails!';
+
+            return {
+                success: false,
+                message: error.message,
+                errors: errors
+            };
+        }
     }
 }
