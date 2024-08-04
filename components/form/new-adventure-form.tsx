@@ -1,12 +1,15 @@
 'use client';
 
-import { useFormState} from 'react-dom';
+import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
 
 import { createAdventure } from '@/app/actions';
 import SubmitButton from './submit-btn';
 import classes from './new-adventure-form.module.css';
 
 export default function NewAdventureForm() {
+    const router = useRouter();
+
     let initialState = {
         success: false,
         message: '',
@@ -18,6 +21,10 @@ export default function NewAdventureForm() {
         }
     }
     const [state, formAction] = useFormState(createAdventure, initialState);
+
+    if (state.success === true) {
+        router.push('/adventures');
+    }
 
     return (
         <div className={classes.wrapper}>

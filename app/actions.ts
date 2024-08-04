@@ -1,8 +1,9 @@
 'use server';
 
 import { uploadImage } from "@/lib/cloudinary";
+import { connectToDB, insertDocument } from '@/lib/mongodb';
 
-export type FormState = {
+type FormState = {
     success: boolean,
     message: string,
     errors: {
@@ -12,8 +13,6 @@ export type FormState = {
         description: string;
     }
 }
-
-const delay = async (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function createAdventure(prevState: FormState, formData: FormData) {
     const title = formData.get('title') as string;
@@ -56,39 +55,73 @@ export async function createAdventure(prevState: FormState, formData: FormData) 
             message: 'Invalid data.',
             errors: errors
         };
-    } else {
-        try {
-            if (image) {
-                const arrayBuffer = await image.arrayBuffer();
-                const base64String = Buffer.from(arrayBuffer).toString('base64');
-                const fileUri = `data:${image.type};base64,${base64String}`;
+    }
 
-                await uploadImage(fileUri);
-                console.log('success!');
-            }
+    // upload image into Claudinary
 
-            // Store data in the DB
+    let imgURL: string = '';
 
-            await delay(5000);
+    try {
+        if (image) {
+            const arrayBuffer = await image.arrayBuffer();
+            const base64String = Buffer.from(arrayBuffer).toString('base64');
+            const fileUri = `data:${image.type};base64,${base64String}`;
 
-            return {
-                success: true,
-                message: 'Stored in the DB.',
-                errors: {
-                    title: '',
-                    image: '',
-                    address: '',
-                    description: ''
-                }
-            };
-        } catch (error: any) {
-            errors.image = 'Image uploading fails!';
+            const result = await uploadImage(fileUri);
+            imgURL = result;
+        }
 
-            return {
-                success: false,
-                message: error.message,
-                errors: errors
-            };
+        if (!imgURL) {
+            throw new Error('Failed to upload image, URL not received.');
+        }
+
+    } catch (error: any) {
+        errors.image = 'Image uploading fails!';
+
+        return {
+            success: false,
+            message: error.message,
+            errors: errors
+        };
+    }
+
+    // Store data in the DB
+
+    const adventure = {
+        title,
+        image: imgURL,
+        address,
+        description,
+        createdAt: new Date().toISOString()
+    }
+
+    let client;
+
+    try {
+        client = await connectToDB();
+    } catch (error) {
+        throw new Error('DB connection failed.');
+    }
+
+    try {
+        await insertDocument(client, 'destinations', adventure);
+    } catch (error) {
+        throw new Error('Failed to insert adventure into the database.');
+
+    } finally {
+        if (client) {
+            await client.close();
         }
     }
+
+    return {
+        success: true,
+        message: 'Stored in the DB.',
+        errors: {
+            title: '',
+            image: '',
+            address: '',
+            description: ''
+        }
+    };
 }
