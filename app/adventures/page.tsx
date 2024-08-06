@@ -1,3 +1,5 @@
+
+
 import { getAllAdventures } from "@/lib/mongodb";
 import AdventureList from "@/components/adventures/adventure-list";
 

@@ -1,7 +1,8 @@
 'use server';
+import { revalidatePath } from "next/cache";
 
 import { uploadImage } from "@/lib/cloudinary";
-import { connectToDB, insertDocument } from '@/lib/mongodb';
+import {insertDocument } from '@/lib/mongodb';
 
 type FormState = {
     success: boolean,
@@ -95,23 +96,11 @@ export async function createAdventure(prevState: FormState, formData: FormData) 
         createdAt: new Date().toISOString()
     }
 
-    let client;
-
     try {
-        client = await connectToDB();
-    } catch (error) {
-        throw new Error('DB connection failed.');
-    }
-
-    try {
-        await insertDocument(client, 'destinations', adventure);
+        await insertDocument('destinations', adventure);
+        revalidatePath('/adventures');
     } catch (error) {
         throw new Error('Failed to insert adventure into the database.');
-
-    } finally {
-        if (client) {
-            await client.close();
-        }
     }
 
     return {

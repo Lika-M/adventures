@@ -1,41 +1,58 @@
-import { MongoClient, ServerApiVersion, InsertOneResult, ObjectId } from 'mongodb';
+import { MongoClient, ServerApiVersion, InsertOneResult } from 'mongodb';
+import { cache } from 'react';
 
-import { type Adventure, AdventureData, AdventureDocument } from '@/types';
+import { type Adventure, type AdventureData, type AdventureDocument } from '@/types';
 
 
 const uri = process.env.MONGODB_URI as string;
+let client: MongoClient | null = null;
 
-export async function connectToDB() {
-    const client = new MongoClient(uri as string, {
-        serverApi: {
-            version: ServerApiVersion.v1,
-            strict: true,
-            deprecationErrors: true,
-        }
-    });
-
-    await client.connect();
-    console.log("Connected successfully to database");
+async function connectToDB() {
+    if (!client) {
+        client = new MongoClient(uri as string, {
+            serverApi: {
+                version: ServerApiVersion.v1,
+                strict: true,
+                deprecationErrors: true,
+            }
+        });
+        await client.connect();
+        console.log("Connected successfully to database");
+    }
     return client;
-
 }
 
+process.on('exit', async () => {
+    if (client) {
+        await client.close();
+        console.log("Database connection closed.");
+    }
+});
+
 export async function insertDocument(
-    client: MongoClient,
     collectionName: string,
     document: AdventureData
 ): Promise<InsertOneResult<Document>> {
+
+    const client = await connectToDB();
+
+    if (!client) {
+        throw new Error('DB connection failed.')
+    }
     const db = client.db('adventures');
     const collection = db.collection(collectionName);
     const result = await collection.insertOne(document);
+
     return result;
 }
 
-export async function getAllAdventures(): Promise<Adventure[]> {
+export const getAllAdventures = cache(async function (): Promise<Adventure[]> {
     const client = await connectToDB();
-    if(!client){
+
+    if (!client) {
         throw new Error('DB connection failed.')
     }
+
     const db = client.db('adventures');
     const collection = db.collection<AdventureDocument>('destinations');
     const result = await collection.find().sort({ createdAt: -1 }).toArray();
@@ -49,4 +66,4 @@ export async function getAllAdventures(): Promise<Adventure[]> {
     });
 
     return adventures;
-}
+});
