@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion, InsertOneResult } from 'mongodb';
+import { MongoClient, ServerApiVersion, InsertOneResult, WithId, ObjectId } from 'mongodb';
 import { cache } from 'react';
 
 import { type Adventure, type AdventureData, type AdventureDocument } from '@/types';
@@ -67,3 +67,26 @@ export const getAllAdventures = cache(async function (): Promise<Adventure[]> {
 
     return adventures;
 });
+
+export async function getAdventureById(
+    adventureId: string,
+): Promise<WithId<any> | null> {
+    const client = await connectToDB();
+    if (!client) {
+        throw new Error('DB connection failed.')
+    }
+    const db = client.db('adventures');
+    const collection = db.collection('destinations');
+    const objectId = ObjectId.createFromHexString(adventureId);
+    const adventure = await collection.findOne({ _id: objectId });
+
+    if (!adventure) {
+        return null;
+    }
+
+    const { _id, ...rest } = adventure;
+    return {
+        ...rest,
+        id: _id.toString()
+    }
+}
