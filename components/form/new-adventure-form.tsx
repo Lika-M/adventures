@@ -3,7 +3,7 @@
 import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 
-import { createAdventure } from '@/app/actions';
+import { createAdventure } from '@/actions/create-adventure';
 import SubmitButton from './submit-btn';
 import classes from './new-adventure-form.module.css';
 
