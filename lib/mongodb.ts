@@ -64,7 +64,10 @@ export const getAllAdventures = cache(async function (): Promise<Adventure[]> {
             id: _id.toString()
         }
     });
-
+    
+    if(!adventures){
+        return [];
+    }
     return adventures;
 });
 
@@ -77,7 +80,7 @@ export async function getAdventureById(
     }
     const db = client.db('adventures');
     const collection = db.collection('destinations');
-    const objectId = ObjectId.createFromHexString(adventureId);
+    const objectId = new ObjectId(adventureId);
     const adventure = await collection.findOne({ _id: objectId });
 
     if (!adventure) {

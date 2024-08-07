@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 
 type ErrorProps = {
-    error: Error & { digest?: string }; 
+    error: Error & { digest?: string };
     reset: () => void;
 };
 
@@ -14,10 +14,14 @@ export default function Error({ error, reset }: ErrorProps) {
 
     return (
         <div className="error">
-            <h2>Something went wrong!</h2>
+                <h2>
+                    Something went wrong!
+                    <br />
+                    An error occurred.
+                </h2>
             <p>{error.message}</p>
             <button
-                onClick={() => reset()} 
+                onClick={() => reset()}
             >
                 Try again
             </button>

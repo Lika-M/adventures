@@ -1,0 +1,50 @@
+.wrapper {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.wrapper h1,
+.wrapper a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.wrapper h1 {
+    font-size: 8rem;
+    color: #F8B367;
+    text-shadow:
+        1px 1px 1px #77002e,
+        2px 2px 1px #77002e,
+        3px 3px 1px #77002e,
+        4px 4px 1px #77002e,
+        5px 5px 1px #77002e,
+        6px 6px 1px #77002e,
+        7px 7px 1px #77002e,
+        8px 8px 1px #77002e,
+        25px 25px 8px rgba(0, 0, 0, 0.2);
+}
+
+.wrapper h3 {
+    margin: 2rem 0;
+    font-size: 20px;
+    font-weight: 600;
+    color:  #77002e;
+}
+
+.wrapper a {
+    font:inherit;
+    display: inline-block;
+    border: 1px solid #77002e;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    box-shadow: 0 15px 15px -11px rgba(0, 0, 0, 0.4);
+    background: #77002e;
+    transition: all 0.2s linear;
+}
+
+.wrapper a:hover {
+    background: #77002e;
+    color: #F8B367;
+}

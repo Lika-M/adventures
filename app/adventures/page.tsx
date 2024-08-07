@@ -1,19 +1,13 @@
-
-
 import { getAllAdventures } from "@/lib/mongodb";
-import AdventureList from "@/components/adventures/adventure-list";
 
-import { type Adventure } from "@/types";
+import AdventureList from "@/components/adventures/adventure-list";
 
 export default async function Adventures() {
 
-  let adventures: Adventure[] = [];
+  const adventures = await getAllAdventures();
 
-  try {
-    adventures = await getAllAdventures();
-  } catch (error) {
-    throw new Error('An error occurred. Please try again later.')
+  if (adventures.length < 1) {
+    throw new Error()
   }
-
   return <AdventureList adventures={adventures} />
 }
