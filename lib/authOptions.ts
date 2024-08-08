@@ -8,7 +8,7 @@ import { findUser } from './mongodb';
 
 export const authOptions = {
     session: {
-        jwt: true,
+        strategy: "jwt" as const
     },
     secret: process.env.NEXTAUTH_SECRET,
     providers: [
@@ -19,8 +19,8 @@ export const authOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                const user: {email: string, password: string} = {email: '', password: ''}; 
-                //TODO get user from the db
+                const user = await findUser('users', credentials?.email as string);
+                //TODO get user from db
 
                 if (!user) {
                     throw new Error('No user found.');
