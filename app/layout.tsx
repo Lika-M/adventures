@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { SessionProvider } from 'next-auth/react';
 
 import MainNavigation from '@/components/navigation/main-navigation';
 import "./globals.css";
@@ -11,11 +12,8 @@ export const metadata: Metadata = {
   description: "The Most Beautiful Places in the World.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
@@ -24,10 +22,12 @@ export default function RootLayout({
         <link rel="icon" href="/world-map.png" />
       </head>
       <body className={inter.className}>
-        <MainNavigation />
-        <main className="main">
-          {children}
-        </main>
+        <SessionProvider>
+          <MainNavigation />
+          <main className="main">
+            {children}
+          </main>
+        </SessionProvider>
       </body>
     </html>
   );
