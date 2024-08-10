@@ -2,9 +2,7 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
 const bcrypt = require('bcrypt');
 
-import { findUser } from './mongodb';
-
-
+import { findUser } from '@/lib/mongodb';
 
 export const authOptions = {
     session: {
@@ -20,10 +18,9 @@ export const authOptions = {
             },
             async authorize(credentials) {
                 const user = await findUser('users', credentials?.email as string);
-                //TODO get user from db
-
+            
                 if (!user) {
-                    throw new Error('No user found.');
+                    throw new Error('Unauthorize!');
                 }
 
                 const verifyPassword = await bcrypt.compare(credentials?.password, user.password);
@@ -33,7 +30,7 @@ export const authOptions = {
                 }
 
                 return {
-                    id: user._id.toString(),
+                    id:user.id,
                     email: user.email,
                     name: null,
                     image: null
@@ -43,4 +40,5 @@ export const authOptions = {
     ]
 };
 
-export default NextAuth(authOptions);
+export const GET = NextAuth(authOptions);
+export const POST = NextAuth(authOptions);
