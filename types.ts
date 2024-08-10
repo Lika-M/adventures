@@ -20,3 +20,13 @@ export type Adventure = {
     description: string,
     createdAt: string
 }
+
+export type UserData = {
+    email: string,
+    password: string
+}
+
+export type User = UserData & {
+    createdAt: string
+}
+
