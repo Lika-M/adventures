@@ -1,0 +1,47 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1; 
+}
+
+.modal-content {
+    background: #fff; 
+    padding: 20px;
+    border-radius: 6px; 
+    width: 80%;
+    max-width: 25rem; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Лека сянка */
+    position: relative;
+    min-height: 8rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+.close {
+    position: absolute;
+    top: -2px;
+    right: 8px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #77002e; 
+}
+
+.modal-content h3 {
+    margin: 8px;
+    color: #77002e;
+}
+
+.modal-content p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+    font-style: italic;
+}
