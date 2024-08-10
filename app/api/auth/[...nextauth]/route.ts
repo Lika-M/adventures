@@ -20,7 +20,7 @@ export const authOptions = {
                 const user = await findUser('users', credentials?.email as string);
             
                 if (!user) {
-                    throw new Error('Unauthorize!');
+                    throw new Error('Unauthorized!');
                 }
 
                 const verifyPassword = await bcrypt.compare(credentials?.password, user.password);

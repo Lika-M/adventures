@@ -4,19 +4,13 @@ import classes from './modal.module.css';
 
 type ModalProps = {
     isOpen: boolean;
+    title: string,
     message: string;
-    title: string
     onClose: () => void;
 }
-// { isOpen, title, message, onClose }: ModalProps
-export default function Modal() {
 
-    const isOpen = true;
-    const title = 'Un error occurred:'
-    const message = 'Something happens!';
-    const onClose = () => console.log('closed');
-   
-    
+export default function Modal({ isOpen, title, message, onClose }: ModalProps) {
+ 
     if (!isOpen) return null;
 
     return (

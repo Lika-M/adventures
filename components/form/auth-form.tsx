@@ -6,15 +6,21 @@ import { signIn } from 'next-auth/react';
 
 import { createUser } from '@/lib/util';
 
-import { type User, type UserData } from '@/types'
+import { type User, type UserData } from '@/types';
+import Modal from '@/components/modal/modal';
 import classes from './auth-form.module.css';
 
 function AuthForm() {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<UserData>({ email: '', password: '' });
+
+    const [modalMessage, setModalMessage] = useState<string>('');
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
     const router = useRouter();
 
     async function signHandler(event: FormEvent<HTMLFormElement>) {
@@ -53,7 +59,8 @@ function AuthForm() {
                 });
 
                 if (result?.error) {
-                    alert(result.error);
+                    setModalMessage(result.error);
+                    setIsModalOpen(true);
 
                     setEmail('');
                     setPassword('');
@@ -65,7 +72,8 @@ function AuthForm() {
                 const result = await createUser(user);
 
                 if (result.status === 422 || result.status === 401) {
-                    alert(result.message);
+                    setModalMessage(result.message);
+                    setIsModalOpen(true);
 
                     setEmail('');
                     setPassword('');
@@ -79,7 +87,7 @@ function AuthForm() {
             }
         } catch (error: any) {
             console.error(error);
-            throw new Error(error.message); 
+            throw new Error(error.message);
 
         } finally {
             setIsLoading(false);
@@ -101,6 +109,10 @@ function AuthForm() {
     function handlePasswordFocus() {
         setPassword('');
         setErrorMessage(state => ({ ...state, password: '' }));
+    }
+
+    function closeModal() {
+        setIsModalOpen(false);
     }
 
     return (
@@ -143,6 +155,12 @@ function AuthForm() {
                     </span>
                 </div>
             </form>
+            {isModalOpen &&
+                <Modal isOpen={isModalOpen}
+                    title={'Un error occurred:'}
+                    message={modalMessage}
+                    onClose={closeModal}
+                />}
         </section>
     );
 }
