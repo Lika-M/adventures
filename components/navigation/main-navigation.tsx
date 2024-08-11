@@ -1,13 +1,27 @@
 'use client';
+
 import { useState } from 'react';
 import Image from 'next/image';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
 
 import ActiveLink from '@/components/ui/active-link';
+import { useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
+
 import classes from './main-navigation.module.css';
 
 export default function MainNavigation() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const router = useRouter();
+
+    const { data: session, status } = useSession();
+    const isAuth = status === 'authenticated';
+
+    async function onLogout() {
+      await  signOut({ redirect: false }); //without reloading the page
+        router.push('/');
+    }
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
@@ -41,12 +55,14 @@ export default function MainNavigation() {
                     <li>
                         <ActiveLink href='/adventures'>All Impressive Places</ActiveLink>
                     </li>
-                    <li className={classes['auth-link']}>
-                        <ActiveLink href='/auth'>Login</ActiveLink>
-                    </li>
-                    <li className={classes['auth-link']}>
-                        <button className='active'>Logout</button>
-                    </li>
+                    {!isAuth
+                        ? <li className={classes['auth-link']}>
+                            <ActiveLink href='/auth'>Login</ActiveLink>
+                        </li>
+                        : <li className={classes['auth-link']}>
+                            <button onClick={onLogout} className='active'>Logout</button>
+                        </li>
+                    }
                 </ul>
             </nav>
         </header>
