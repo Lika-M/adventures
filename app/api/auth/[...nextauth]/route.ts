@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 
 import { findUser } from '@/lib/mongodb';
 
-export const authOptions = {
+const handler = NextAuth({
     session: {
-        strategy: "jwt" as const
+        strategy: "jwt",
     },
     secret: process.env.NEXTAUTH_SECRET,
     providers: [
@@ -14,11 +14,11 @@ export const authOptions = {
             name: 'Credentials',
             credentials: {
                 email: { label: "Email", type: "email" },
-                password: { label: "Password", type: "password" }
+                password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
                 const user = await findUser('users', credentials?.email as string);
-            
+
                 if (!user) {
                     throw new Error('Unauthorized!');
                 }
@@ -30,15 +30,14 @@ export const authOptions = {
                 }
 
                 return {
-                    id:user.id,
+                    id: user.id,
                     email: user.email,
                     name: null,
-                    image: null
+                    image: null,
                 };
-            }
-        })
-    ]
-};
+            },
+        }),
+    ],
+});
 
-export const GET = NextAuth(authOptions);
-export const POST = NextAuth(authOptions);
+export { handler as GET, handler as POST };
