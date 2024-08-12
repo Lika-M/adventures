@@ -56,10 +56,10 @@ export default function MainNavigation() {
                         <ActiveLink href='/adventures'>All Impressive Places</ActiveLink>
                     </li>
                     {!isAuth
-                        ? <li className={classes['auth-link']}>
+                        ? <li key="login" className={classes['auth-link']}>
                             <ActiveLink href='/auth'>Login</ActiveLink>
                         </li>
-                        : <li className={classes['auth-link']}>
+                        : <li key="logout" className={classes['auth-link']}>
                             <button onClick={onLogout} className='active'>Logout</button>
                         </li>
                     }
