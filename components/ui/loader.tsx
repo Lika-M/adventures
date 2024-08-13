@@ -8,7 +8,7 @@ export default function Loader({isSending}: LoaderProps) {
     return (
         <div
             className={classes.wrapper}
-            style={{ visibility:isSending ? 'visible' : 'hidden' }}
+            style={{ display:isSending ? 'inline-block' : 'none' }}
         >
             <div className={classes.track}>
                 <div className={classes.kurt}>

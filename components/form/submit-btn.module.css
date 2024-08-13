@@ -30,3 +30,9 @@
     color: #ae99a1;
     border: 1px solid #764558;
 }
+
+.actions .signIn{
+    margin-left: 5px;
+    color: #a50e48;
+    cursor: pointer;
+}
