@@ -70,13 +70,14 @@ export const getAllAdventures = cache(async function (): Promise<Adventure[]> {
     return adventures;
 });
 
-export async function getAdventureById(
+export const getAdventureById = cache(async function (
     adventureId: string,
 ): Promise<WithId<any> | null> {
     const client = await connectToDB();
     if (!client) {
-        throw new Error('DB connection failed.')
+        throw new Error('DB connection failed.');
     }
+
     const db = client.db('adventures');
     const collection = db.collection('destinations');
     const objectId = new ObjectId(adventureId);
@@ -90,8 +91,8 @@ export async function getAdventureById(
     return {
         ...rest,
         id: _id.toString()
-    }
-}
+    };
+});
 
 export async function findUser(
     collectionName: string,
