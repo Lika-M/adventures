@@ -2,6 +2,7 @@
 
 import { useFormStatus } from 'react-dom';
 
+import Loader from '@/components/ui/loader';
 import classes from './submit-btn.module.css';
 
 export default function SubmitButton() {
@@ -9,8 +10,9 @@ export default function SubmitButton() {
 
     return (
         <div className={classes.actions}>
+            <Loader isSending={pending} />
             <button type="submit" disabled={pending}>
-                {pending ? 'Submitting...' : 'Add Adventure'}
+                {pending ? 'Sending...' : 'Add Adventure'}
             </button>
         </div>
     );
