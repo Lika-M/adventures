@@ -2,7 +2,6 @@
 
 import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 
 import Loader from '@/components/ui/loader';
 import classes from './submit-btn.module.css';
@@ -10,9 +9,6 @@ import classes from './submit-btn.module.css';
 export default function SubmitButton() {
     const { pending } = useFormStatus();
     const router = useRouter();
-
-    const { data: session, status } = useSession();
-    const isAuth = status === 'authenticated';
 
     return (
         <div className={classes.actions}>
@@ -23,7 +19,7 @@ export default function SubmitButton() {
                     Click here.
                 </span>
             </div>)}
-            <button type="submit" disabled={pending || !isAuth}>
+            <button type="submit" disabled={pending}>
                 {pending ? 'Sending...' : 'Add Adventure'}
             </button>
         </div>

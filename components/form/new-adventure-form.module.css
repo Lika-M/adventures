@@ -4,6 +4,19 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+.wrapper header {
+    text-align: center;
+    background-color: #77002e;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    color: white;
+    padding-block: 1rem;
+}
+
+.wrapper header span:nth-of-type(2) {
+    color:#9BC1FA;
+}
+
 .form {
     padding: 1rem;
 }
