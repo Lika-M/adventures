@@ -157,7 +157,7 @@ function AuthForm() {
             </form>
             {isModalOpen &&
                 <Modal isOpen={isModalOpen}
-                    title={'Un error occurred:'}
+                    title={'There was an issue with your request:'}
                     message={modalMessage}
                     onClose={closeModal}
                 />}
