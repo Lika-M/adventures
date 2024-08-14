@@ -1,8 +1,10 @@
 'use server';
 import { revalidatePath } from "next/cache";
+import { getServerSession } from "next-auth";
 
 import { uploadImage } from "@/lib/cloudinary";
-import {insertDocument } from '@/lib/mongodb';
+import { insertDocument } from '@/lib/mongodb';
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 type FormState = {
     success: boolean,
@@ -12,10 +14,13 @@ type FormState = {
         image: string;
         address: string;
         description: string;
+        user: string 
     }
 }
 
 export async function createAdventure(prevState: FormState, formData: FormData) {
+    const session = await getServerSession(authOptions);
+
     const title = formData.get('title') as string;
     const image = formData.get('image') as File;
     const address = formData.get('address') as string;
@@ -25,7 +30,8 @@ export async function createAdventure(prevState: FormState, formData: FormData) 
         title: '',
         image: '',
         address: '',
-        description: ''
+        description: '',
+        user: ''
     };
 
     let hasErrors = false;
@@ -47,6 +53,11 @@ export async function createAdventure(prevState: FormState, formData: FormData) 
 
     if (!description || description === '') {
         errors.description = 'Description is required!';
+        hasErrors = true;
+    }
+
+    if (!session || !session.user) {
+        errors.user = 'Please sign in to continue.';
         hasErrors = true;
     }
 
@@ -87,12 +98,14 @@ export async function createAdventure(prevState: FormState, formData: FormData) 
     }
 
     // Store data in the DB
-
+    const userEmail = session?.user?.email;
+   
     const adventure = {
         title,
         image: imgURL,
         address,
         description,
+        creator: userEmail,
         createdAt: new Date().toISOString()
     }
 
@@ -110,7 +123,8 @@ export async function createAdventure(prevState: FormState, formData: FormData) 
             title: '',
             image: '',
             address: '',
-            description: ''
+            description: '',
+            user: ''
         }
     };
 }

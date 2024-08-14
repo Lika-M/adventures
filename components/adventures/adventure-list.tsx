@@ -10,7 +10,7 @@ type AdventuresListProps = {
 export default function AdventureList({ adventures }: AdventuresListProps) {
     return (
         <ul className={classes.list}>
-            {adventures.map(({ id, image, title, address, description, createdAt }) => (
+            {adventures.map(({ id, image, title, address, description, creator, createdAt }) => (
                 <AdventureItem
                     key={id}
                     id={id}
@@ -18,6 +18,7 @@ export default function AdventureList({ adventures }: AdventuresListProps) {
                     title={title}
                     address={address}
                     description={description}
+                    creator={creator}
                     createdAt={createdAt}
                 />
             ))}

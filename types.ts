@@ -5,6 +5,7 @@ export type AdventureData = {
     title: string,
     address: string,
     description: string,
+    creator: string | null | undefined,
     createdAt: string
 }
 
@@ -12,13 +13,8 @@ export type AdventureDocument = AdventureData & {
     _id: ObjectId,
 }
 
-export type Adventure = {
+export type Adventure = AdventureData & {
     id: string,
-    image: string,
-    title: string,
-    address: string,
-    description: string,
-    createdAt: string
 }
 
 export type UserData = {
