@@ -5,8 +5,6 @@ import { findUser, insertDocument } from '@/lib/mongodb';
 
 export async function POST(req: Request): Promise<Response> {
     const { email, password } = await req.json();
-
-    // Проверка дали вече съществува потребител с този имейл
     const existingUser = await findUser('users', email);
     
     if (existingUser) {
@@ -16,7 +14,6 @@ export async function POST(req: Request): Promise<Response> {
         });
     }
 
-    // Валидиране на данните
     const isValid = email && email.includes('@') && password && password.trim().length > 5;
     if (!isValid) {
         return new Response(JSON.stringify({ message: 'Invalid user data.' }), {
@@ -26,7 +23,6 @@ export async function POST(req: Request): Promise<Response> {
     }
 
     try {
-        // Хеширане на паролата
         const hashedPassword = await bcrypt.hash(password, 12);
 
         if(!hashedPassword){
@@ -36,14 +32,12 @@ export async function POST(req: Request): Promise<Response> {
             });
         }
 
-        // Подготовка на данните за потребителя
         const userData: User = {
             email,
             password: hashedPassword,
             createdAt: new Date().toISOString()
         };
 
-        // Вмъкване на потребителя в базата данни
         const result = await insertDocument('users', userData);
 
         if (!result) {
@@ -53,14 +47,13 @@ export async function POST(req: Request): Promise<Response> {
             });
         }
 
-        // Успешно създаване на потребителя
         return new Response(JSON.stringify({ message: 'User created.', data: result }), {
             status: 201,
             headers: { 'Content-Type': 'application/json' }
         });
 
     } catch (error) {
-        // Обработка на други грешки
+        
         return new Response(JSON.stringify({ message: 'User registration failed.' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }

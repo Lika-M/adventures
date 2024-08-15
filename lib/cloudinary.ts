@@ -11,6 +11,5 @@ export async function uploadImage(file: any) {
         folder: 'adventures',
     });
 
-    console.log(result.secure_url)
     return result.secure_url;
 }

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { useRouter } from 'next/navigation';
 
 import ActiveLink from '@/components/ui/active-link';
 import { useSession } from 'next-auth/react';
@@ -13,14 +12,12 @@ import classes from './main-navigation.module.css';
 
 export default function MainNavigation() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const router = useRouter();
 
     const { data: session, status } = useSession();
     const isAuth = status === 'authenticated';
 
     async function onLogout() {
       await  signOut({ redirect: false }); //without reloading the page
-        router.push('/');
     }
 
     const toggleMobileMenu = () => {
