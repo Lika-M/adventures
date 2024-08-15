@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 
 import { uploadImage } from "@/lib/cloudinary";
 import { insertDocument } from '@/lib/mongodb';
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from '@/lib/auth';
 
 type FormState = {
     success: boolean,
