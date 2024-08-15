@@ -32,6 +32,13 @@ export default function NewAdventureForm() {
     useEffect(() => {
         if (state.errors.user) {
             setIsModalOpen(true);
+            setInputErrors({
+                title: '',
+                image: '',
+                description: '',
+                address: '',
+                user: state.errors.user
+            });
         } else {
             setInputErrors(state.errors);
         }
