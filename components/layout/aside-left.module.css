@@ -1,0 +1,20 @@
+.aside {
+    flex-basis: 20%;
+}
+
+.content {
+    padding: 18px;
+    border: 1px solid #77002e;
+}
+
+.content h2 {
+    font-size: 22px;
+}
+
+.content span {
+    color: red;
+}
+
+.content p {
+    font-size: 16px;
+}

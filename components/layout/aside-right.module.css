@@ -1,0 +1,30 @@
+.aside {
+    flex-basis: 20%;
+}
+
+.link {
+    margin-bottom: 40px;
+}
+
+.title {
+    font-family: sans-serif;
+    font-size: 18px;
+    margin: 8px 0 5px 0;
+}
+
+.gold {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #77002e;
+    background-color: #ffffff;
+    border: 1px solid #77002e;
+    padding: 2px;
+    margin-bottom: 0;
+}
+.destination {
+    font-size: 14px;
+    color: #616161;
+    margin-top: 0;
+}
